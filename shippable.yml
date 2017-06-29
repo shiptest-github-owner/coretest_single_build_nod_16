@@ -1,0 +1,50 @@
+# Language setting
+language: node_js
+
+# TODO: check if service versions are what we expect
+# has limited services to reduce ram usage
+services:
+  - memcached 
+  - mongodb 
+  - mysql 
+  - postgres 
+  - rabbitmq 
+  - redis 
+  - selenium
+
+# Version number
+node_js:
+  - 0.10    
+env:
+  global:
+  #Testing for user defined envs
+    - TEST=FOO
+    - CUSTOM=ymlenv
+    
+  matrix:
+    - M1=ONE
+
+#Testing for include and exclude branches
+branches:
+  only:
+    - master
+  except:
+    - nonmaster
+
+build:
+  pre_ci:
+  #Testing for pre_ci carrying over to pre_ci_boot
+    - export IMAGE_TAG="master"   
+    
+  pre_ci_boot:
+    image_name: drydock/u14nodall
+    image_tag: $IMAGE_TAG
+    options: '--privileged=true --net=bridge -e FOO=true -e BOO=false' 
+
+  ci:
+    - node --version
+    - lsb_release -a
+    - docker --version
+    - docker ps
+    - ./env.sh  
+  
