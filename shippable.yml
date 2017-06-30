@@ -37,7 +37,7 @@ build:
     - export IMAGE_TAG="master"   
     
   pre_ci_boot:
-    image_name: drydock/u14nodall
+    image_name: drydock/u16nodall
     image_tag: $IMAGE_TAG
     options: '--privileged=true --net=bridge -e FOO=true -e BOO=false' 
 
